@@ -23,7 +23,7 @@ end
 local function Remove(name)
     for targetname = 1, #Players do
         if Players[targetname] == name then
-          table.remove(Players, targetname)
+            table.remove(Players, targetname)
         end
     end
 end

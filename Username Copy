@@ -1,0 +1,80 @@
+local PLRS = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local Id = game.PlaceId
+local Roles = {"Trainee Team Member", "Junior Team Member", "Senior Team Member"}
+local Players = {}
+local CharactersToCopy = 7
+local ToggleKeybind = "T"
+local SetKeybind = "Y"
+local Folder
+local StringValue
+_G.Toggled = false
+
+if Id == 539960592 then
+    Folder = "Player_Data"
+    StringValue = "Role"
+elseif Id == 624472608 then
+    Folder = "leaderstats"
+    StringValue = "Rank"
+end
+
+local function Remove(name)
+    for targetname = 1, #Players do
+        if Players[targetname] == name then
+          table.remove(Players, targetname)
+        end
+    end
+end
+    
+local function Check(plr)
+    local Role = plr:WaitForChild(Folder):WaitForChild(StringValue).Value
+    if table.find(Roles, Role) then
+        table.insert(Players, plr.Name)
+    end
+end
+
+local function Notify(title, text)
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = title,
+    Text = text,
+})
+end
+
+PLRS.PlayerRemoving:Connect(function(plr)
+    Remove(plr.Name)
+end)
+
+PLRS.PlayerAdded:Connect(function(plr)
+    Check(plr)
+end)
+
+for _,plr in pairs(PLRS:GetPlayers()) do
+    Check(plr)
+end
+
+UIS.InputBegan:connect(function(input, InChat)
+    if InChat then return end 
+    if input.KeyCode == Enum.KeyCode[ToggleKeybind] then
+        _G.Toggled = not _G.Toggled
+        Notify("Script has been toggled", "Successfully toggled script! ["..tostring(_G.Toggled).."]")
+    end
+    if input.KeyCode == Enum.KeyCode[SetKeybind] then
+        if _G.Toggled then
+        local Success
+        local Name
+            Success = pcall(function()
+                Name = Players[math.random(1, #Players)]
+            end)
+        
+            if Success then
+                local FinalName = Name:sub(1, CharactersToCopy)
+                Remove(Name)
+                setclipboard(FinalName)
+                Notify("Set username", "Successfully set to clipboard! Player: "..Name.." ["..FinalName.."]")
+            else
+                setclipboard("nil")
+                Notify("Something went wrong", "Something went wrong! This might be caused because there aren't usernames left. Try again, please. \"nil\" has been set to your clipboard!")
+            end
+        end
+    end
+end)

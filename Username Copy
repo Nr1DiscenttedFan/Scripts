@@ -4,10 +4,10 @@ local PLRS = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local Id = game.PlaceId
 local Roles = {"Trainee Team Member", "Junior Team Member", "Senior Team Member"}
+local Players = {}
 local CharactersToCopy = 7
 local ToggleKeybind = "T"
 local SetKeybind = "Y"
-local Players = {}
 local Folder
 local StringValue
 _G.Toggled = false

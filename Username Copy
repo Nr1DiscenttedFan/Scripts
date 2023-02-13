@@ -1,3 +1,5 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local PLRS = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
 local Id = game.PlaceId
